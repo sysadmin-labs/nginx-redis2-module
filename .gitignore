@@ -1,0 +1,18 @@
+# created by the test suite
+t/servroot/
+
+# created by ci/build.sh, ci/redis.sh, ci/reload.sh and ci/hostile.sh
+ci-work/
+
+# fetched and built by the parser workflow
+ragel.tar.gz
+ragel-*/
+
+# leftovers from patch(1)
+*.orig
+*.rej
+
+# editor leftovers
+*~
+*.swp
+*.swo

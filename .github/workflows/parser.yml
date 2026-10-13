@@ -1,0 +1,53 @@
+name: Parser
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+  schedule:
+    # Monday morning, so a new nginx release that breaks the module shows
+    # up here and not in somebody's build
+    - cron: '31 7 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  ragel:
+    name: the generated parser is what its sources produce
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    # src/ngx_http_redis2_reply.c is generated and checked in, so a build
+    # needs no ragel.  The risk that comes with that is a fix applied to the
+    # generated file and not to the .rl it came from: it works, it ships, and
+    # it disappears the next time anyone regenerates.
+
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Build the pinned ragel
+        run: |
+          . .github/versions.env
+          url=https://www.colm.net/files/ragel
+          ci/fetch-verify.sh \
+            "$url/ragel-$RAGEL_VERSION.tar.gz" "$RAGEL_SHA256" ragel.tar.gz
+          tar xzf ragel.tar.gz
+          cd "ragel-$RAGEL_VERSION"
+          ./configure --prefix="$HOME/ragel" > configure.log 2>&1 ||
+            { tail -20 configure.log; exit 1; }
+          make -j"$(nproc)" > make.log 2>&1 || { tail -30 make.log; exit 1; }
+          make install > /dev/null
+          "$HOME/ragel/bin/ragel" --version | head -1
+
+      - name: Regenerate and ask git whether anything moved
+        run: |
+          ci/parser.sh "$HOME/ragel/bin/ragel"
+          if ! git diff --exit-code -- src/; then
+            echo >&2
+            echo "The checked-in parser is not what the .rl sources produce." >&2
+            echo "Either the .c was edited directly, or it was generated with" >&2
+            echo "another ragel than the one pinned in versions.env." >&2
+            exit 1
+          fi
+          echo "the checked-in parser matches its sources"
