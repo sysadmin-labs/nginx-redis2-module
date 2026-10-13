@@ -4,6 +4,17 @@ Newest first.  Dates are release dates.
 
 ## Unreleased
 
+### Fixed
+
+- `redis2_pass` with a variable in it built its upstream out of an
+  `ngx_url_t` that nothing had zeroed: three of its fields were filled in
+  and the rest was whatever the stack held.  Nothing in the versions this
+  builds against reads one of the unset fields -- `default_port` was read
+  there on nginx older than 1.11.6, which is long out of the matrix -- so
+  what this fixes is latent rather than a failure anyone can produce
+  today.  Every other `ngx_url_t` in nginx reaches its reader memzero'ed
+  first, and this one does now too.
+
 ### Added
 
 - A `LICENSE` file.  The grant was in the README, at line 745 of it, and
