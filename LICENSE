@@ -1,4 +1,14 @@
-Copyright (c) 2026, Jochen Neumeister <joneum@FreeBSD.org>
+The module in src/ is Yichun Zhang's and OpenResty's.  Upstream states the
+grant in its README and nowhere else -- no licence file, not one source
+header -- in these words:
+
+    This module is licenced under the BSD license.
+
+That text follows, unaltered.  The build and test scaffolding around it --
+ci/, t/, .github/, config and the documentation -- is not their work and is
+covered by the same terms, held by:
+
+    Copyright (c) 2026, Jochen Neumeister <joneum@FreeBSD.org>
 
 Copyright (C) 2010-2018, by Yichun "agentzh" Zhang (章亦春)
 <agentzh@gmail.com>, OpenResty Inc.
@@ -9,13 +19,13 @@ Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are
 met:
 
-   1. Redistributions of source code must retain the above copyright
-      notice, this list of conditions and the following disclaimer.
+   * Redistributions of source code must retain the above copyright
+     notice, this list of conditions and the following disclaimer.
 
-   2. Redistributions in binary form must reproduce the above copyright
-      notice, this list of conditions and the following disclaimer in
-      the documentation and/or other materials provided with the
-      distribution.
+   * Redistributions in binary form must reproduce the above copyright
+     notice, this list of conditions and the following disclaimer in
+     the documentation and/or other materials provided with the
+     distribution.
 
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS
 IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,

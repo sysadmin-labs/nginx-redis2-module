@@ -55,6 +55,14 @@ ngx_http_redis2_handler(ngx_http_request_t *r)
             return NGX_HTTP_INTERNAL_SERVER_ERROR;
         }
 
+        /* Zeroed, not merely filled in part.  Three of this structure's
+         * fields are set below and the rest were whatever the stack held;
+         * ngx_http_redis2_upstream_add() reads default_port out of it on
+         * nginx older than 1.11.6, and every other reader of an ngx_url_t
+         * in nginx is handed one that was memzero'ed first.
+         */
+        ngx_memzero(&url, sizeof(ngx_url_t));
+
         url.host = target;
         url.port = 0;
         url.no_resolve = 1;
