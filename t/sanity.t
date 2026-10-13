@@ -100,8 +100,8 @@ GET /t
     }
 --- request
 GET /t
---- response_body_like
-\A\+OK\r\n\+OK\r\n\+OK\r\n-ERR .+\r\n\z
+--- response_body_like eval
+qr/\A\+OK\r\n\+OK\r\n\+OK\r\n-ERR .+\r\n\z/s
 
 
 

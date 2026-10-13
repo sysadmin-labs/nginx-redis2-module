@@ -40,14 +40,5 @@ jobs:
           make install > /dev/null
           "$HOME/ragel/bin/ragel" --version | head -1
 
-      - name: Regenerate and ask git whether anything moved
-        run: |
-          ci/parser.sh "$HOME/ragel/bin/ragel"
-          if ! git diff --exit-code -- src/; then
-            echo >&2
-            echo "The checked-in parser is not what the .rl sources produce." >&2
-            echo "Either the .c was edited directly, or it was generated with" >&2
-            echo "another ragel than the one pinned in versions.env." >&2
-            exit 1
-          fi
-          echo "the checked-in parser matches its sources"
+      - name: Regenerate and compare
+        run: ci/parser.sh --check "$HOME/ragel/bin/ragel"

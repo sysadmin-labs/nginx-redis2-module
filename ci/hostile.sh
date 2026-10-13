@@ -109,9 +109,11 @@ while (my $c = $srv->accept) {
         piece($c, "X not a redis reply\r\n");
 
     } elsif ($mode eq 'extra') {
-        # The reply that was asked for, and then one that was not.
-        piece($c, "+OK\r\n");
-        piece($c, "+SURPRISE\r\n");
+        # The reply that was asked for and one that was not, in a single
+        # write on purpose.  Sent apart, the first reply finishes the
+        # request and the surplus arrives at a connection nobody is
+        # reading any more -- which is a different case, and not this one.
+        print $c "+OK\r\n+SURPRISE\r\n";
 
     } elsif ($mode eq 'silent') {
         # Connected, accepted the request, says nothing.

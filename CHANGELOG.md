@@ -49,6 +49,22 @@ Newest first.  Dates are release dates.
   because two ragel releases produce different output from the same input
   and the distribution's version moves with the runner image.
 
+- The gate ignores one thing, measured rather than assumed: ragel writes
+  `#line <n> file.c` markers that point into the file it is generating, and
+  two builds of ragel 6.10 number them differently.  The same input through
+  the same release gave 18/288/308/615 here and 13/279/295/578 on the
+  runner, with the rest of the file identical byte for byte and the gap
+  growing with the amount of table emitted.  Those markers are bookkeeping
+  about the output; a gate failing on them would be failing on the machine.
+  Everything else is compared exactly, the markers pointing back into the
+  `.rl` files included -- those do say which source produced what.
+
+- The two constants ragel emits and nothing reads are now commented out
+  instead of deleted.  Upstream deleted them, which left every `#line`
+  marker after that point naming a line five further down than the one it
+  sits on.  Same number of lines, same silenced warning, markers that are
+  true again.
+
 - The scaffolding the other modules in this organization carry: a version
   and digest pin for every build input in `.github/versions.env`, the
   release matrix, the FreeBSD virtual machine, A/UBSan, valgrind, CodeQL,

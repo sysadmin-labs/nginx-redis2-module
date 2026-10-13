@@ -247,8 +247,10 @@ static const char _reply_trans_actions[] = {
 };
 
 static const int reply_start = 1;
+/* reply_first_final: emitted by ragel, read by nobody, see ci/parser.sh */
 static const int reply_error = 0;
 
+/* reply_en_main: emitted by ragel, read by nobody, see ci/parser.sh */
 
 
 #line 23 "src/ngx_http_redis2_reply.rl"
