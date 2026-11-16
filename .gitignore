@@ -3,6 +3,10 @@ t/servroot/
 
 # created by ci/build.sh, ci/redis.sh, ci/reload.sh and ci/hostile.sh
 ci-work/
+# created by the sanitizer workflow
+sanlog/
+sanitizer.log
+sanfindings.txt
 
 # fetched and built by the parser workflow
 ragel.tar.gz
